@@ -56,7 +56,7 @@ void createNewTask() {
       controller: _controller,
       onSave: saveNewTask,
       onCancel: () => Navigator.of(context).pop(),
-    ); 
+    );  
   },);
 }
 

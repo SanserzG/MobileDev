@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: WeatherApp(),
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -56,9 +56,7 @@ class _WeatherApState extends State<WeatherApp> {
 
   Future<Map<String,dynamic>> loadData() async {
     final responseApi = await Dio().get('http://api.weatherapi.com/v1/forecast.json?key=$key&q=$curCity&days=7');
-    print(responseApi.statusCode);
     if (responseApi.statusCode == 200) {
-      
       return responseApi.data;
     } else {
       throw Exception(responseApi.statusCode);
@@ -68,9 +66,8 @@ class _WeatherApState extends State<WeatherApp> {
   }
   @override
   void initState() {
-      int hour = DateTime.now().hour;
-    
      response = loadData();
+     
   }
   
  
@@ -80,6 +77,12 @@ class _WeatherApState extends State<WeatherApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        response = loadData();
+        setState(() {
+         
+        });
+      }),
       appBar: AppBar(title: Text(curCity!,style: TextStyle(color: Colors.white),), backgroundColor: Colors.blue, centerTitle: true,
       actions: [IconButton(onPressed:() { 
         showDialog(context: context , builder:(context) {
@@ -120,7 +123,7 @@ class _WeatherApState extends State<WeatherApp> {
              var curDay = snapshot.data!['current'];
              var forecast = snapshot.data!['forecast'];
              
-            print(snapshot.data!['current']['temp_c']);
+            
             return Column(
               
               children: [
@@ -193,7 +196,7 @@ class _WeatherApState extends State<WeatherApp> {
                   return ElevatedButton(
                     onPressed: () {
                       selected = index;
-                      print(selected);
+                    
                       setState(() {
                         
                       });
